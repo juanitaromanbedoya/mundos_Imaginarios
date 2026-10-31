@@ -1,3 +1,4 @@
+process.loadEnvFile();
 const {crearMundo, guardarMundo, leerMundo} = require('./mundo')
 
 const args = process.argv.slice(2);

@@ -51,7 +51,10 @@ function guardarMundo(mundo){
     fs.mkdirSync(carpeta, { recursive: true});
     
     const archivo = path.join(carpeta, `mundo_${mundo.id}.json`);
-    fs.writeFileSync(archivo, JSON.stringify(mundo, null, 2));
+    
+    if (!fs.existsSync(archivo)) {
+        fs.writeFileSync(archivo, JSON.stringify(mundo, null, 2));
+    }
     return archivo;
 }
 
