@@ -30,9 +30,16 @@ async function describirMundo(mundo) {
     });
 
     // paso 4: revisar que el servicio respondió bien
-    if (!respuesta.ok) {
-        throw new Error(`El modelo de texto respondió con error ${respuesta.status}`);
-    }
+   if (!respuesta.ok) {
+    // crea una variable que almacena el error
+    const error = new Error(`El modelo de texto respondió con error ${respuesta.status}`);
+    //agrega el codigo del estado
+    error.status = respuesta.status;
+
+    error.retryAfter = respuesta.headers.get('retry-after');
+    //lanza el error
+    throw error;
+}
 
     // paso 5: sacar el texto de la respuesta
     const datos = await respuesta.json();

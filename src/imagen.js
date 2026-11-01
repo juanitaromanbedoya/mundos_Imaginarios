@@ -25,7 +25,15 @@ async function generarImagen(descripcion) {
     });
     // paso 3: revisar que el servicio respondió bien
     if (!respuesta.ok) {
-        throw new Error(`El modelo de imágenes respondió con error ${respuesta.status}`);
+        //crear el error en una variable (con tu mismo mensaje)
+        const error = new Error(`El modelo de imagenes respondío con error ${respuesta.status}`);
+        // agregarle el código de estado
+        error.status = respuesta.status;
+        //  agregarle el encabezado retry-after (puede ser null)
+        error.retryAfter = respuesta.headers.get('retry-after');
+        // lanza el error
+        throw error;
+
     }
     // paso 4: sacar la imagen de la respuesta
     const datos = await respuesta.json();
