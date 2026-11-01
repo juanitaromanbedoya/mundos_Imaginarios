@@ -1,4 +1,6 @@
-// paso 1: leer la configuración que cargó el .env
+const fs = require('fs');
+const path = require('path');
+
 async function describirMundo(mundo) {
     const apiKey = process.env.TEXTO_API_KEY;
     const url = process.env.TEXTO_URL;
@@ -8,7 +10,7 @@ async function describirMundo(mundo) {
         throw new Error('Faltan variables TEXTO_* en el archivo .env');
     }
     // paso 2: mensaje de sistema (el que escribes tú)
-    const mensajeSistema = `Tu tarea es generar una descripción visual detallada basada en los datos del usuario. Debes seguir estrictamente estas reglas: 1. Escribe la respuesta en un único párrafo y enteramente en inglés. 2. La extensión debe ser de entre 80 y 120 palabras. 3. Describe únicamente una escena visual (escena, elementos, iluminación, composición y estilo artístico), sin tramas, cuentos ni historias. 4. Incorpora de forma natural los 5 colores indicados (traducidos al inglés). 5. No incluyas títulos, ni formato markdown (como negritas o viñetas), ni texto escrito dentro de la imagen. Devuelve únicamente el párrafo plano.`;
+    const mensajeSistema = `Tu tarea es generar una descripción visual detallada basada en los datos del usuario. Debes seguir estrictamente estas reglas: 1. Escribe la respuesta en un único párrafo y enteramente en inglés. 2. La extensión debe ser de entre 80 y 120 palabras. 3. Describe únicamente una escena visual (escena, elementos, iluminación, composición y estilo artístico), sin tramas, cuentos ni historias. 4. Incorpora de forma natural los 5 colores indicados (traducidos al inglés). 5. No incluyas títulos, ni formato markdown,no use asteriscos ni ningún símbolo de formato, ni texto escrito dentro de la imagen. Devuelve únicamente el párrafo plano.`;
 
     // paso 3: enviar la petición al modelo
     const respuesta = await fetch(url, {
@@ -48,6 +50,27 @@ async function describirMundo(mundo) {
     return descripcion;
 }
 
+function rutaDescripcion(id) {
+    const carpetaDes = path.join(__dirname, '..', 'descripciones');
+    return path.join(carpetaDes, `mundo_${id}.txt`);
+}
+
+function guardarDescripcion(id, descripcion) {
+    // 1. Obtenemos la ruta completa del archivo usando solo el id
+    const archivo = rutaDescripcion(id);
+    
+    // 2. Extraemos la carpeta usando path.dirname
+    const carpetaDes = path.dirname(archivo);
+    
+    // 3. Creamos la carpeta y escribimos el archivo
+    fs.mkdirSync(carpetaDes, { recursive: true });
+    fs.writeFileSync(archivo, descripcion);
+    
+    return archivo;
+}
+
 module.exports = {
-    describirMundo
+    describirMundo,
+    guardarDescripcion,
+    rutaDescripcion
 };
