@@ -1,12 +1,12 @@
 {
-  "name": "mundos_imagninarios_ia",
+  "name": "mundos_imaginarios_ia",
   "version": "1.0.0",
   "description": "Programa de consola en Node.js que genera mundos imaginarios utilizando APIs de texto e imágenes con IA.",
   "main": "src/index.js",
   "scripts": {
     "start": "node src/index.js"
   },
-  "keywords": ["IA","Mundos Imaginarios","Generador de Imagenes", "Consumo de API"],
+  "keywords": ["IA","mundos-imaginarios","generador-de-imagenes", "consumo-de-API"],
   "author": "Juanita Román Bedoya",
   "license": "ISC",
   "type": "commonjs",
