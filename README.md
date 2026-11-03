@@ -123,3 +123,15 @@ mundos-ia/
 - **Texto: Groq**, modelo `openai/gpt-oss-20b`. Plan gratuito con límites por minuto y por día. Consola y clave: https://console.groq.com
 
 - **Imagen: Cloudflare Workers AI**, modelo FLUX.1-schnell. Cuota gratuita diaria en "neuronas". Panel: https://dash.cloudflare.com y documentación: https://developers.cloudflare.com/workers-ai/
+
+## Experimento: .gitignore
+
+Se ejecutó `npm publish --dry-run` dos veces para ver qué archivos se empaquetan.
+
+**Con `.gitignore`:** 7 archivos y 5.8 kB. Solo se incluyen `package.json`, `README.md`, `.env.example` y los cuatro archivos de `src/`. El archivo `.env` y las carpetas `data/`, `descripciones/` e `imagenes/` quedan fuera. npm usa el `.gitignore` cuando no existe un `.npmignore`.
+
+**Sin `.gitignore`** (renombrado temporalmente a `.gitignore.off`): 15 archivos y 1.6 MB. Aparecen `.env`, los JSON, los textos y las imágenes generadas.
+
+**Por qué es peligroso:** si se publica así, el archivo `.env` con las claves privadas queda público en el registro de npm. Cualquier persona podría descargarlo y usar las claves, gastando la cuota o poniendo en riesgo las cuentas. Además se publicarían archivos pesados que no hacen parte del programa. Si una clave se filtra, hay que revocarla y crear otra. Por eso `.env`, `data/`, `descripciones/` e `imagenes/` deben estar siempre en `.gitignore` antes de publicar o de hacer un commit.
+
+El experimento se hizo solo con `--dry-run`, así que no se publicó nada, y el `.gitignore` se restauró después.
